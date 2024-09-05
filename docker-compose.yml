@@ -1,0 +1,27 @@
+version: "3"
+services:
+  rocket-api:
+    container_name: rocket-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:1234@db:5432/rockets
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "3000:3000"
+  db:
+    container_name: db
+    image: postgres:10.4
+    ports:
+      - "5432:5432"
+    volumes: 
+      - ./postgresdata:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: rockets
